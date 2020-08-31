@@ -38,5 +38,5 @@ def test_case7():
     assert main(testInput) == '[{ case7a: { apple: 5 } }, { case7a: { banana: 5 } }, { case7b: { orange: 5 } }]'
 
 def test_case8():
-    testInput = '{ apple: 1, banana: 2, carrot: 3, strawberries: 4, oatmeal: 5, peanut butter: 6 }, [{ name: case6a, inventory: { apple: 2 } }, { name: case6b, inventory: { banana: 1 } }, { name: case6c, inventory: { carrot: 3 } }, { name: case6d, inventory: { strawberries: 4 } }, { name: case6e, inventory: { oatmeal: 5 } }, { name: case6f, inventory: { peanut butter: 6 } }]'
+    testInput = '{ apple: 1, banana: 2, carrot: 3, strawberries: 4, oatmeal: 5, peanut butter: 6 }, [{ name: case8a, inventory: { apple: 2 } }, { name: case8b, inventory: { banana: 1 } }, { name: case8c, inventory: { carrot: 3 } }, { name: case8d, inventory: { strawberries: 4 } }, { name: case8e, inventory: { oatmeal: 5 } }, { name: case8f, inventory: { peanut butter: 6 } }]'
     assert main(testInput) == '[]'
