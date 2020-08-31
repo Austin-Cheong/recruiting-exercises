@@ -110,17 +110,33 @@ for line in f:
 
     for item in orders:
         requested = orders[item]
-        print("Item = ", item)
-        print("Requested = ", requested)
+        print("~~~~~ Item = ", item, " ||| Requested = ", requested, "~~~~~")
+        answer = [] 
 
         for wh in inventories:
             print("Current warehouse name = ", wh)
             print("Current warehouse ivty = ", inventories[wh])
 
-            if(item in inventories[wh] and requested <= inventories[wh][item]): #TODO: Need to see if the requested amount exists across ALL warehouses...
-                print("IN STOCK")
-            else:
-                print("OUT OF STOCK")
+            # if(item in inventories[wh] and requested <= inventories[wh][item]): #TODO: Need to see if the requested amount exists across ALL warehouses...
+            if(item in inventories[wh] and inventories[wh][item] != 0):
+                if(requested >= inventories[wh][item]):
+                    requested -= inventories[wh][item]
+                else:
+                    difference = abs(inventories[wh][item] - requested)
+                    inventories[wh][item] -= difference
+                    requested -= (inventories[wh][item] - difference)
+
+                pair = {}
+                pair[wh] = inventories[wh]
+                answer.append(pair)
+
+        print("REMAINING = ", requested)
+        if(requested <= 0):
+            print("ANSWERS = ", answer)
+        else:
+            # print("REQUESTED COULD NOT BE FULLFILLED...")
+            print([])
+            # print("ANSWERS = ", answer)
 
     print("================================== LINE ENDING ==================================")
 

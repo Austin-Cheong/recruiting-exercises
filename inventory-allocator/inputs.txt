@@ -1,5 +1,3 @@
-{ apple: 0 }, [{ name: case1, inventory: { apple: 0 } }]
-{ apple: 0 }, [{ name: case2, inventory: { apple: 1 } }]
 { apple: 1 }, [{ name: case3, inventory: { apple: 0 } }]
 { apple: 1 }, [{ name: case4, inventory: { apple: 1 } }]
 { apple: 1 }, [{ name: owd, inventory: { apple: 1 } }]
