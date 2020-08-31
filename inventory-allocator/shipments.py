@@ -2,6 +2,7 @@
 import json
 
 f = open("inputs.txt", "r")
+open("outputs.txt", "w").close()
 '''
 { apple: 5, banana: 5, orange: 5 }, [{ name: owd, inventory: { apple: 5, banana: 5 } }, { name: dm, inventory: { apple: 5, orange: 5 } }, { name: test, inventory: { apple: 1, banana: 2, orange: 3, dragonfruit: 4 } }]
 { apple: 1 }, [{ name: owd, inventory: { apple: 1 } }]
@@ -107,36 +108,70 @@ for line in f:
     print("Inventories = ", inventories)
     # print(inventories.keys())
     # print(inventories.values())
+    placedOrders = []
 
     for item in orders:
         requested = orders[item]
         print("~~~~~ Item = ", item, " ||| Requested = ", requested, "~~~~~")
-        answer = [] 
-
+        # answer = [] 
         for wh in inventories:
             print("Current warehouse name = ", wh)
             print("Current warehouse ivty = ", inventories[wh])
+            print("Current requested = ", requested)
+            if(requested == 0):
+                break
+            else:
+                # if(item in inventories[wh] and requested <= inventories[wh][item]): #TODO: Need to see if the requested amount exists across ALL warehouses...
+                if(item in inventories[wh] and inventories[wh][item] != 0):
+                    # If the requested amount is EQUAL or GREATER than the current wh's stock, take all of that stock from the wh
+                    if(requested >= inventories[wh][item]):
+                        requested -= inventories[wh][item]
+                        pair = {}
+                        stock = {}
+                        # Take the full amount of stock from the warehouse:
+                        stock[item] = inventories[wh][item]
+                        pair[wh] = stock
+                        placedOrders.append(pair)
 
-            # if(item in inventories[wh] and requested <= inventories[wh][item]): #TODO: Need to see if the requested amount exists across ALL warehouses...
-            if(item in inventories[wh] and inventories[wh][item] != 0):
-                if(requested >= inventories[wh][item]):
-                    requested -= inventories[wh][item]
-                else:
-                    difference = abs(inventories[wh][item] - requested)
-                    inventories[wh][item] -= difference
-                    requested -= (inventories[wh][item] - difference)
+                        # The warehouse then has depleted stock of that item
+                        inventories[wh][item] = 0 
+                
+                    # If the requested amount is LESS than the current wh's stock, take just the requested amount, then reduce requested to 0
+                    else:
+                        remainingStock = inventories[wh][item] - requested
+                        inventories[wh][item] = remainingStock
+                        # requested -= (inventories[wh][item] - remainingStock) # 5 - (5) = 0
+                        pair = {}
+                        stock = {}
+                        stock[item] = requested
+                        pair[wh] = stock
+                        placedOrders.append(pair)
+                        
+                        # The requested amount is reduced to 0 since it can be fulfilled by this current wh
+                        requested = 0
 
-                pair = {}
-                pair[wh] = inventories[wh]
-                answer.append(pair)
-
+            print("ANSWERS IN PROGRESS = ", placedOrders)
         print("REMAINING = ", requested)
-        if(requested <= 0):
-            print("ANSWERS = ", answer)
-        else:
-            # print("REQUESTED COULD NOT BE FULLFILLED...")
-            print([])
-            # print("ANSWERS = ", answer)
+        output = open("outputs.txt", "a")
+        if(requested > 0):
+            placedOrders = []
+            break
+
+        # for subItem in answer:
+        #     placedOrders.append(subItem)
+            
+    print("REMAINING = ", requested)
+    output = open("outputs.txt", "a")
+    if(requested <= 0):
+        print("ANSWERS = ", placedOrders)
+        formatOutput = str(placedOrders).replace('\'', '').replace('{', '{ ').replace('}',' }')
+        output.write(formatOutput + '\n')
+    else:
+        # print("REQUESTED COULD NOT BE FULLFILLED...")
+        # print("ANSWERS = ", answer)
+        print([])
+        output.write(str([]) + '\n' )
+    output.close()
 
     print("================================== LINE ENDING ==================================")
 
